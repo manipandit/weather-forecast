@@ -17,7 +17,7 @@ function WeatherCard() {
   const unitsValue = useRecoilValue(unitAtom);
 
   const symbol = unitsValue ? "°C" : "°F";
-
+  const windSpeedMetric = unitsValue ? "m/s" : "miles/hour";
   useEffect(() => {
     if (data.length === 0) return;
 
@@ -102,7 +102,9 @@ function WeatherCard() {
           <div className="w-full h-[90px] flex justify-between bg-zinc-800 p-3 rounded-2xl bg-opacity-60">
             <div>
               <div className="text-lg font-thin opacity-70">Wind Speed</div>
-              <div className="text-center">{currentObject?.wind.speed}</div>
+              <div className="text-center">
+                {currentObject?.wind.speed} {windSpeedMetric}
+              </div>
             </div>
             <div>
               <div className="text-lg font-thin opacity-70">Wind Direction</div>
