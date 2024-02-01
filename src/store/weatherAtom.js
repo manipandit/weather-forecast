@@ -24,3 +24,8 @@ export const currentIndexAtom = atom({
   key: "currentIndexAtom",
   default: null,
 });
+
+export const unitAtom = atom({
+  key: "unitAtom",
+  default: true,
+});

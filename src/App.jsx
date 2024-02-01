@@ -3,7 +3,7 @@ import ForecastCard from "./components/forecast/ForecastCard";
 import SearchInput from "./components/SearchInput";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { cityAtom, currentWeatherAtom } from "./store/weatherAtom";
+import { cityAtom, currentWeatherAtom, unitAtom } from "./store/weatherAtom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -11,11 +11,15 @@ function App() {
   const cityName = useRecoilValue(cityAtom);
   const [weatherData, setWeatherData] = useRecoilState(currentWeatherAtom);
   const [err, setErr] = useState(false);
+  const unitsValue = useRecoilValue(unitAtom);
+  // console.log("unitsVaL: ", unitsValue);
 
   async function fetchWeatherData() {
     const apiUrl = import.meta.env.VITE_API_URL;
     const apiKey = import.meta.env.VITE_API_KEY;
-    const url = `${apiUrl}q=${cityName}&appid=${apiKey}&units=metric`;
+    const units = unitsValue ? "metric" : "imperial";
+
+    const url = `${apiUrl}q=${cityName}&appid=${apiKey}&units=${units}`;
 
     try {
       const { data } = await axios.get(url);
@@ -29,10 +33,10 @@ function App() {
   }
   useEffect(() => {
     fetchWeatherData();
-  }, [cityName]);
+  }, [cityName, unitsValue]);
 
   return (
-    <div className="max-w-screen-sm md:max-w-screen-2xl px-4 mt-5">
+    <div className="max-w-screen-sm md:min-w-full px-4 mt-5">
       <div className="flex items-center justify-center">
         <SearchInput />
       </div>

@@ -1,5 +1,7 @@
 import React from "react";
 import { findDay } from "@/lib/findDay";
+import { unitAtom } from "@/store/weatherAtom";
+import { useRecoilValue } from "recoil";
 
 function DayDetails({ details }) {
   const day = findDay(details?.dt);
@@ -23,16 +25,18 @@ function DayDetails({ details }) {
   ];
 
   const finalDate = `${date} ${months[month - 1]} ${year}`;
+  const unitsValue = useRecoilValue(unitAtom);
+
+  const symbol = unitsValue ? "°C" : "°F";
 
   return (
-    <div className="h-fit p-6 rounded-2xl  flex items-center justify-center border border-slate-50 border-opacity-50 mt-10 md:mt-0">
+    <div className="h-fit p-6 md:p-2 lg:p-6 rounded-2xl  flex items-center justify-center border border-slate-50 border-opacity-50 mt-10 md:mt-0">
       <div className="flex flex-col items-center gap-y-2">
         <div className="flex flex-col">
           <span className="text-xl opacity-60 text-center">{day}</span>
           <span className="text-base opacity-60">{finalDate}</span>
         </div>
         <div className="flex flex-col items-center gap-y-1">
-          {/* <CloudHail color="white" size={70} /> */}
           <img
             src={`https://openweathermap.org/img/wn/${details?.weather[0].icon}.png`}
             className="h-[100px] w-[100px] object-cover"
@@ -40,7 +44,7 @@ function DayDetails({ details }) {
           />
           <div>{details?.weather[0].description}</div>
           <span className="text-3xl">
-            {details?.main.temp} <span>°C</span>
+            {details?.main.temp} <span>{symbol}</span>
           </span>
         </div>
       </div>

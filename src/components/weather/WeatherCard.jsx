@@ -5,13 +5,18 @@ import {
   cityAtom,
   currentIndexAtom,
   currentWeatherAtom,
+  unitAtom,
 } from "@/store/weatherAtom";
+import determineWindDirection from "@/lib/windDirection";
 
 function WeatherCard() {
   const cityName = useRecoilValue(cityAtom);
   const data = useRecoilValue(currentWeatherAtom);
   const [currentObject, setCurrentObject] = useState(null);
   const [index, setIndex] = useRecoilState(currentIndexAtom);
+  const unitsValue = useRecoilValue(unitAtom);
+
+  const symbol = unitsValue ? "°C" : "°F";
 
   useEffect(() => {
     if (data.length === 0) return;
@@ -56,7 +61,7 @@ function WeatherCard() {
             <span className="text-[100px] font-semibold">
               {currentObject?.main.temp}
             </span>
-            <sup className="text-3xl absolute top-2">°C</sup>
+            <sup className="text-3xl absolute top-2">{symbol}</sup>
           </div>
         </div>
         {/*  */}
@@ -77,13 +82,34 @@ function WeatherCard() {
 
         {/*  */}
         <div className="flex flex-col gap-y-4">
-          <div className="w-full h-[90px] bg-zinc-800 p-3 rounded-2xl bg-opacity-60">
-            <div className="text-lg font-thin opacity-70"> Min Temp</div>
-            <div>{currentObject?.main.temp_min}°C</div>
+          <div className="w-full h-[90px] flex justify-between bg-zinc-800 p-3 rounded-2xl bg-opacity-60">
+            <div>
+              <div className="text-lg font-thin opacity-70"> Min Temp</div>
+              <div className="text-center">
+                {currentObject?.main.temp_min}
+                {symbol}
+              </div>
+            </div>
+
+            <div>
+              <div className="text-lg font-thin opacity-70">Max Temp</div>
+              <div className="text-center">
+                {currentObject?.main.temp_max}
+                {symbol}
+              </div>
+            </div>
           </div>
-          <div className="w-full h-[90px] bg-zinc-800 p-3 rounded-2xl bg-opacity-60">
-            <div className="text-lg font-thin opacity-70">Max Temp</div>
-            <div>{currentObject?.main.temp_max}°C</div>
+          <div className="w-full h-[90px] flex justify-between bg-zinc-800 p-3 rounded-2xl bg-opacity-60">
+            <div>
+              <div className="text-lg font-thin opacity-70">Wind Speed</div>
+              <div className="text-center">{currentObject?.wind.speed}</div>
+            </div>
+            <div>
+              <div className="text-lg font-thin opacity-70">Wind Direction</div>
+              <div className="text-center">
+                {determineWindDirection(currentObject?.wind.deg)}
+              </div>
+            </div>
           </div>
         </div>
       </div>
