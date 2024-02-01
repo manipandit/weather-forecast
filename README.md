@@ -7,7 +7,7 @@ To run weather-forecast on your local machine, follow these steps:
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/yourusername/weather-forecast.git
+   git clone https://github.com/manipandit/weather-forecast.git
    cd weather-forecast
 2. **Install Dependencies:**
    ```bash
